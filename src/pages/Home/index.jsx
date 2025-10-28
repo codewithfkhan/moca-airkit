@@ -12,10 +12,10 @@ const Home = () => {
  
   // Your configuration from Moca Network Dashboard
   const config = {
-    verifierDid: "did:key:81fRftze4NLNiL6YK9j6Drnm5Fx93Dk2mSHuPN63cQes9insgSKE3BCveg6Tp4i76CzdmTRpPq1NkXmD9jyjwMVbPr",           // From dashboard
+    verifierDid: "81fC5yvhKgoqQU8ZNgKpmW7KGEyjUSd3HL26uAkeGYQ4X8gGv1nwEcp8v4iFUtrxGwN83FFC32t8dvWJwqMJUExwp3",           // From dashboard
     apiKey: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYzODZjYjRkLWMwZGUtNDYyOS1hNDEyLThkY2Y2ZjUwZjgwNSJ9.eyJwYXJ0bmVySWQiOiIwYzE4MTc3YS1hOTYwLTQyNjUtYTg4OC1lZjY5YzNkNjc3MWMiLCJzY29wZSI6Imlzc3VlIHZlcmlmeSIsImV4cCI6MTc1ODUyNjE1M30.Cih4aDnOnm-LyWpV5ztSA_Q5zpp6mY1fqveQ9hDaYeXw1say3_TOpKFGfRPS2wdMS3Y7CbcJpAVMUt4vOIt5fdqIEPCHl6mKiZdo1-Ru3g8_-9O65JcIWO_zgB5XRacuHGZjVa_F2BTnvHtfKSotBzwPNMEFxEUWk--KOy7-7wdF2BVEOL1IjX4BdAktlQGQwLVfPCEBZVE5uiswJkZvVvnVF1JCvGWCtxddTKyfxeYTIKiyGIXz5F9M_ld3A7qOw0VXjiIRKt5IMgwWI5g6632MJpHZthvVPWBTEI5VMJgmScJwUIQwCgJ08ZjvpqnsfaQiYu6z16pJQQZW0ddZevfHq5esuV_8BvYUlvGijAca_gtUe14-QMHHdZUqz8RnKunJs2R4CwXDocvLO6rxChm0TiHK6UTWDukeY5zFEzXJZcDOfv6i0Mfx6SBu9ENhJt2lMVZ-2Qu01m4rMHYjU9gr1JQrWmINGbWgYCnUJF7js1AwwF5-611EudyOhNhzBkkU99rkIh8sSoUAMPcV2d_K-KBW7VPBanUBVqxWrf4lP6-3Z45LT91z9InlCxtPAkBhH8qJnujuK9fBya28HeS17mKiGVMzHECTkT19zgqbbJyBU_ZFZxoGonQ-zW9i1NsvCU2eS3hyw67nchlcUFL8suSltd7YZTzbTCXGrXE",            // Generated from dashboard  
     programId: "c21p5030jh3oa0071399uW",               // Configured on dashboard
-    partnerId: "0c18177a-a960-4265-a888-ef69c3d6771c",                // Air partner ID
+    partnerId: "8b5773b4-adea-487c-bcec-f362e8b285bf",                // Air partner ID
     redirectUrl: 'https://developers.sandbox.air3.com/example/issue'
   };
  
