@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Private keys (NEVER commit these)
+*.key
+*.pem
+partner_private.key
+partner_public.pem
+
+# JWKS file (contains public key)
+jwks.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store

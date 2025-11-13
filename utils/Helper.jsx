@@ -1,3 +1,14 @@
+/**
+ * LEGACY FUNCTION - NOT USED IN CURRENT JWT FLOW
+ *
+ * This function was used for direct API authentication with static credentials.
+ * Current implementation uses:
+ * - Dynamic JWT token generation via Node.js backend (backend/server.js)
+ * - Tokens fetched from backend on app initialization (src/services/tokenService.js)
+ * - AIR SDK handles API communication internally based on BUILD_ENV
+ *
+ * Kept for reference only.
+ */
 export const getAirVerifierAuthToken = async (verifierDid, apiKey, apiUrl) => {
     try {
         const response = await fetch(`${apiUrl}/verifier/login`, {

@@ -1,22 +1,21 @@
 import { Fragment, useEffect, useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { AirService, BUILD_ENV } from "@mocanetwork/airkit";
+import { generateToken } from '../../services/tokenService';
  
 const Home = () => {
   const [verificationStatus, setVerificationStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [widget, setWidget] = useState(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
- 
-  const API_URL = "https://credential.api.sandbox.air3.com";
- 
-  // Your configuration from Moca Network Dashboard
+  const [apiToken, setApiToken] = useState(null);
+
+  // Configuration from environment variables
+  // Note: API URL is determined by BUILD_ENV.SANDBOX in airService.init()
   const config = {
-    verifierDid: "81fC5yvhKgoqQU8ZNgKpmW7KGEyjUSd3HL26uAkeGYQ4X8gGv1nwEcp8v4iFUtrxGwN83FFC32t8dvWJwqMJUExwp3",           // From dashboard
-    apiKey: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYzODZjYjRkLWMwZGUtNDYyOS1hNDEyLThkY2Y2ZjUwZjgwNSJ9.eyJwYXJ0bmVySWQiOiIwYzE4MTc3YS1hOTYwLTQyNjUtYTg4OC1lZjY5YzNkNjc3MWMiLCJzY29wZSI6Imlzc3VlIHZlcmlmeSIsImV4cCI6MTc1ODUyNjE1M30.Cih4aDnOnm-LyWpV5ztSA_Q5zpp6mY1fqveQ9hDaYeXw1say3_TOpKFGfRPS2wdMS3Y7CbcJpAVMUt4vOIt5fdqIEPCHl6mKiZdo1-Ru3g8_-9O65JcIWO_zgB5XRacuHGZjVa_F2BTnvHtfKSotBzwPNMEFxEUWk--KOy7-7wdF2BVEOL1IjX4BdAktlQGQwLVfPCEBZVE5uiswJkZvVvnVF1JCvGWCtxddTKyfxeYTIKiyGIXz5F9M_ld3A7qOw0VXjiIRKt5IMgwWI5g6632MJpHZthvVPWBTEI5VMJgmScJwUIQwCgJ08ZjvpqnsfaQiYu6z16pJQQZW0ddZevfHq5esuV_8BvYUlvGijAca_gtUe14-QMHHdZUqz8RnKunJs2R4CwXDocvLO6rxChm0TiHK6UTWDukeY5zFEzXJZcDOfv6i0Mfx6SBu9ENhJt2lMVZ-2Qu01m4rMHYjU9gr1JQrWmINGbWgYCnUJF7js1AwwF5-611EudyOhNhzBkkU99rkIh8sSoUAMPcV2d_K-KBW7VPBanUBVqxWrf4lP6-3Z45LT91z9InlCxtPAkBhH8qJnujuK9fBya28HeS17mKiGVMzHECTkT19zgqbbJyBU_ZFZxoGonQ-zW9i1NsvCU2eS3hyw67nchlcUFL8suSltd7YZTzbTCXGrXE",            // Generated from dashboard  
-    programId: "c21p5030jh3oa0071399uW",               // Configured on dashboard
-    partnerId: "8b5773b4-adea-487c-bcec-f362e8b285bf",                // Air partner ID
-    redirectUrl: 'https://developers.sandbox.air3.com/example/issue'
+    programId: import.meta.env.VITE_PROGRAM_ID,
+    partnerId: import.meta.env.VITE_PARTNER_ID,
+    redirectUrl: import.meta.env.VITE_REDIRECT_URL
   };
  
  
@@ -36,7 +35,17 @@ const Home = () => {
  
   const initializeWidget = async () => {
     try {
-      console.log('Starting AirService initialization with config:', { partnerId: config.partnerId });
+      // Step 1: Fetch fresh JWT token from backend
+      setVerificationStatus('Fetching authentication token...');
+      console.log('Step 1: Fetching JWT token from backend...');
+
+      const tokenData = await generateToken();
+      setApiToken(tokenData.token);
+      console.log('✓ Token received and stored');
+
+      // Step 2: Initialize AirService
+      setVerificationStatus('Initializing AIR SDK...');
+      console.log('Step 2: Starting AirService initialization with config:', { partnerId: config.partnerId });
  
       const airService = new AirService({
         partnerId: config.partnerId
@@ -55,14 +64,15 @@ const Home = () => {
       console.log('Setting widget state...');
  
       setWidget(airService);
-      setVerificationStatus('AirService initialized successfully');
+      setVerificationStatus('Ready for verification');
  
-      console.log('Widget state should be set now');
+      console.log('✓ Initialization complete');
     } catch (error) {
-      console.error('Failed to initialize verifier widget:', error);
+      console.error('Failed to initialize:', error);
       console.error('Error details:', error.message, error.stack);
       setVerificationStatus(`Initialization failed: ${error.message}`);
       setWidget(null);
+      setApiToken(null);
     }
   };
  
@@ -87,13 +97,13 @@ const Home = () => {
       console.log('Login result:', loginResult);
  
       console.log('Calling widget.verifyCredential with params:', {
-        authToken: config.apiKey ? 'PRESENT' : 'MISSING',
+        authToken: apiToken ? 'PRESENT' : 'MISSING',
         programId: config.programId,
         redirectUrl: config.redirectUrl
       });
  
       const result = await widget.verifyCredential({
-        authToken: config.apiKey,
+        authToken: apiToken,
         programId: config.programId,
         redirectUrl: config.redirectUrl
       });
