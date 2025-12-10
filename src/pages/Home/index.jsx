@@ -138,13 +138,44 @@ const Home = () => {
  
   return (
     <Fragment>
-      <CustomButton onClick={handleVerification} disabled={isLoading} title={isLoading ? "Initializing..." : "Start Verification"} layout="dark" className="mb-3">
-      </CustomButton>
-      {verificationStatus && (
-        <div className="alert alert-info mb-3">
-          {verificationStatus}
+      <div className="d-flex flex-column align-items-center justify-content-center min-vh-100 px-4">
+        <div className="max_w_480 w-100">
+          {/* Logo Section */}
+          <div className="mb-1 text-center">
+            <img
+              src="/DAT-logo.png"
+              alt="DAT Logo"
+              style={{
+                width: '80px',
+                height: '80px',
+                margin: '0 auto',
+                display: 'block'
+              }}
+            />
+          </div>
+
+          {/* Heading */}
+          <h1 className="text-dark fw-400 fs-22 mb-4 text-center" style={{ lineHeight: '1.5' }}>
+            To be eligible you need to verify your spendings on Oyunfur for game cards
+          </h1>
+
+          {/* Button */}
+          <CustomButton
+            onClick={handleVerification}
+            disabled={isLoading}
+            title={isLoading ? "Initializing..." : "Understood and continue"}
+            layout="dark"
+            className="mb-3"
+          />
+
+          {/* Status Messages (hidden during normal flow) */}
+          {verificationStatus && (
+            <div className="alert alert-info mt-3">
+              {verificationStatus}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </Fragment>
   )
 }
