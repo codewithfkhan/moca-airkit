@@ -112,10 +112,14 @@ const Home = () => {
  
       if (result && result.success !== false) {
         setVerificationStatus('Verification completed successfully');
-        // Navigate to verification step
       } else {
         setVerificationStatus('Verification completed but no credentials found');
       }
+
+      // Redirect after verification (success or not)
+      setTimeout(() => {
+        window.location.href = "https://bingx.com/en/partner/MOCA";
+      }, 1000);
     } catch (error) {
       console.error('Verification failed:', error);
       console.error('Error type:', typeof error);
@@ -131,6 +135,11 @@ const Home = () => {
       }
  
       setVerificationStatus(`Verification failed: ${errorMessage}`);
+
+      // Redirect even if modal is closed or error occurs
+      setTimeout(() => {
+        window.location.href = "https://bingx.com/en/partner/MOCA";
+      }, 1000);
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +165,7 @@ const Home = () => {
 
           {/* Heading */}
           <h1 className="text-dark fw-400 fs-22 mb-4 text-center" style={{ lineHeight: '1.5' }}>
-            To be eligible you need to verify your spendings on Oyunfur for game cards
+            Verify your Oyunfor spending to trade on BingX and claim your reward
           </h1>
 
           {/* Button */}
