@@ -146,8 +146,8 @@ const Home = () => {
               src="/DAT-logo.png"
               alt="DAT Logo"
               style={{
-                width: '80px',
-                height: '80px',
+                width: '120px',
+                height: '120px',
                 margin: '0 auto',
                 display: 'block'
               }}
