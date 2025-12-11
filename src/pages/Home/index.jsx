@@ -9,6 +9,7 @@ const Home = () => {
   const [widget, setWidget] = useState(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
   const [apiToken, setApiToken] = useState(null);
+  const [isVerificationComplete, setIsVerificationComplete] = useState(false);
 
   // Configuration from environment variables
   // Note: API URL is determined by BUILD_ENV.SANDBOX in airService.init()
@@ -76,6 +77,11 @@ const Home = () => {
     }
   };
  
+  const handleRedirectToBingX = () => {
+    // Use window.top to break out of iframe and redirect parent page
+    window.top.location.href = "https://bingx.com/en/partner/MOCA";
+  };
+
   const handleVerification = async () => {
     console.log('Starting verification process...', widget, config);
  
@@ -112,14 +118,14 @@ const Home = () => {
  
       if (result && result.success !== false) {
         setVerificationStatus('Verification completed successfully');
+        setIsVerificationComplete(true);
       } else {
         setVerificationStatus('Verification completed but no credentials found');
+        // Redirect after delay if no credentials found
+        setTimeout(() => {
+          window.top.location.href = "https://bingx.com/en/partner/MOCA";
+        }, 1000);
       }
-
-      // Redirect after verification (success or not)
-      setTimeout(() => {
-        window.location.href = "https://bingx.com/en/partner/MOCA";
-      }, 1000);
     } catch (error) {
       console.error('Verification failed:', error);
       console.error('Error type:', typeof error);
@@ -138,7 +144,7 @@ const Home = () => {
 
       // Redirect even if modal is closed or error occurs
       setTimeout(() => {
-        window.location.href = "https://bingx.com/en/partner/MOCA";
+        window.top.location.href = "https://bingx.com/en/partner/MOCA";
       }, 1000);
     } finally {
       setIsLoading(false);
@@ -165,20 +171,28 @@ const Home = () => {
 
           {/* Heading */}
           <h1 className="text-dark fw-400 fs-22 mb-4 text-center" style={{ lineHeight: '1.5' }}>
-            Verify your Oyunfor spending to trade on BingX and claim your reward
+            {isVerificationComplete
+              ? "Verification completed successfully!"
+              : "Verify your Oyunfor spending to trade on BingX and claim your reward"}
           </h1>
 
           {/* Button */}
           <CustomButton
-            onClick={handleVerification}
+            onClick={isVerificationComplete ? handleRedirectToBingX : handleVerification}
             disabled={isLoading}
-            title={isLoading ? "Initializing..." : "Understood and continue"}
+            title={
+              isLoading
+                ? "Initializing..."
+                : isVerificationComplete
+                  ? "Go to BingX"
+                  : "Agree and continue"
+            }
             layout="dark"
             className="mb-3"
           />
 
           {/* Status Messages (hidden during normal flow) */}
-          {verificationStatus && (
+          {verificationStatus && !isVerificationComplete && (
             <div className="alert alert-info mt-3">
               {verificationStatus}
             </div>
